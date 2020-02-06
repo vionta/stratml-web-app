@@ -1,0 +1,31 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>us.stratml</groupId>
+	<artifactId>stratmlapp</artifactId>
+	<version>1</version>
+	<packaging>war</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.basex</groupId>
+			<artifactId>basex</artifactId>
+			<version>7.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.basex</groupId>
+			<artifactId>basex-api</artifactId>
+			<version>7.6</version>
+		</dependency>
+
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>basex</id>
+			<name>BaseX Maven Repository</name>
+			<url>http://files.basex.org/maven</url>
+		</repository>
+	</repositories>
+
+</project>
