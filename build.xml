@@ -1,100 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="stratmlapp"   basedir="." default="build">
 
-	<!--
-	<property file="conf/build.properties"  />
-	-->
-	<property name="deploy.dir" value="C:/dev/server/basex/webapp"  />
-	<property name="documentation.file" value="C:/dev/ws/mapanavegacion/process/build/pageslog.html"  />		
-	<property name="sources.dir" value="src/main/resources"  />		
-	<property name="form.sources.dir" value="C:/dev/ws/stratml/vionta2/StratML/forms/wizard"  />		
-		
-	<property name="target.dir" value="dist"  />
-	<property name="temp.dir" value="dist"  />
-		
-		
-	<!-- ............................................. -->
-	<!-- ............... BASE TASKS .................. -->
-	<!-- ............................................. -->
-	<target name="help"  description="Project Help" >
-		<echo>
+  <!-- A basex distribution server to deploy and use files for distribution 
+       Check more information at basex wasex.org
+  -->
+  <property name="basex.server.home" value="C:/dev/server/basex"  />
+  <!-- Wizard form folder. We use the client side XSLTXYForms based for stratml 
+       edition.
+  -->
+  <property name="form.sources.dir" value="C:/dev/ws/stratml/vionta2/StratML/forms/wizard"  />
+  <!-- Documentation file (description to be included on the zip and war distribution)
+  -->
+  <property name="documentation.file" value="C:/dev/ws/mapanavegacion/process/build/pageslog.html"  />		  
+  <property name="deploy.dir" value="${basex.server.home}/webapp"  />
+
+  <property name="sources.dir" value="src/main/resources"  />
+  
+  
+  
+  <property name="target.dir" value="dist"  />
+  <property name="temp.dir" value="dist"  />
+  
+  
+  <!-- ............................................. -->
+  <!-- ............... BASE TASKS .................. -->
+  <!-- ............................................. -->
+  <target name="help"  description="Project Help" >
+    <echo>
       clean : Not in use. 
       build : Copies work files to the server folder
     </echo>
-	</target>
-	
+  </target>
+  
+  <!--
+      <target name="clean" description="delete the project build folder">
+      <delete dir="build/${archivo-entrada}"  failonerror="false" />
+      <mkdir  dir="build/${archivo-entrada}" />
+      </target>
+  -->
+  
+  <target name="build" description="Main Target">
+    <copy  todir="${deploy.dir}" >
+      <fileset dir="${sources.dir}" >
+	<include name="**/*.xqm"/>
+	<include name="**/*.xsl"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  
+  <target name="update-conf" description="Main Target">
+    <copy  todir="${deploy.dir}/WEB-INF" >
+      <fileset dir="${sources.dir}/WEB-INF" >
+	<include name="web.xml" />
+      </fileset>
+    </copy>
+  </target>
+  
+  
+  <target name="dist" description="Prepare distribution zip file">
+    <mkdir  dir="${target.dir}" />
+    <tstamp>
+      <format property="build.date" pattern="yyyy-MM-dd"/>
+    </tstamp>
+    <!--
+	<copy  todir="${temp.dir}" >
+	<fileset dir="${sources.dir}" >
+	<include name="**/*.xqm"/>
+	<include name="**/*.xsl"/>
+	</fileset>
+	</copy>
+    -->
+    <zip destfile="${target.dir}/stratmlapp.war">
+      <fileset dir="${sources.dir}" >
 	<!--
-	<target name="clean" description="delete the project build folder">
-		<delete dir="build/${archivo-entrada}"  failonerror="false" />
-		<mkdir  dir="build/${archivo-entrada}" />
-	</target>
+	    <include name="**/*.xqm"/>
+	    <include name="**/*.xsl"/>
 	-->
-	
-	<target name="build" description="Main Target">
-	    <copy  todir="${deploy.dir}" >
-			<fileset dir="${sources.dir}" >
-				<include name="**/*.xqm"/>
-				<include name="**/*.xsl"/>
-			</fileset>
-		</copy>
-	</target>
-	
-	
-	<target name="update-conf" description="Main Target">
-		    <copy  todir="${deploy.dir}/WEB-INF" >
-				<fileset dir="${sources.dir}/WEB-INF" >
-					<include name="web.xml" />
-				</fileset>
-			</copy>
-		</target>
-		
-	
-	<target name="dist" description="Prepare distribution zip file">
-		<mkdir  dir="${target.dir}" />
-		<tstamp>
-			<format property="build.date" pattern="yyyy-MM-dd"/>
-		</tstamp>
-		<!--
-		<copy  todir="${temp.dir}" >
-					<fileset dir="${sources.dir}" >
-						<include name="**/*.xqm"/>
-						<include name="**/*.xsl"/>
-					</fileset>
-				</copy>
-		-->
-		<zip destfile="${target.dir}/stratmlapp.war">
-			<fileset dir="${sources.dir}" >
-				<!--
-				<include name="**/*.xqm"/>
-				<include name="**/*.xsl"/>
-				-->
-			</fileset>
-			<fileset dir="${form.sources.dir}" >
-					<!--  
-					<include name="*.xml"/>
-					<include name="labels/**" />
-					<include name="data/**" />
-					<include name="*.css" />
-					<include name="xform/**" />
-					<include name="css/**" />
-					  <zipfileset dir="htdocs/manual" prefix="docs/user-guide"/>
-					  <zipgroupfileset dir="." includes="examples*.zip"/>
-					-->
-				</fileset>
-			<fileset dir="target/stratmlapp-1" >
-								<include name="WEB-INF/lib/*.jar"/>
-								<!--  
-								<include name="labels/**" />
-								<include name="data/**" />
-								<include name="*.css" />
-								<include name="xform/**" />
-								<include name="css/**" />
-								  <zipfileset dir="htdocs/manual" prefix="docs/user-guide"/>
-								  <zipgroupfileset dir="." includes="examples*.zip"/>
-								-->
-							</fileset>
-			</zip>
-		</target>
+      </fileset>
+      <fileset dir="${form.sources.dir}" >
+	<!--  
+	     <include name="*.xml"/>
+	     <include name="labels/**" />
+	     <include name="data/**" />
+	     <include name="*.css" />
+	     <include name="xform/**" />
+	     <include name="css/**" />
+	     <zipfileset dir="htdocs/manual" prefix="docs/user-guide"/>
+	     <zipgroupfileset dir="." includes="examples*.zip"/>
+	-->
+      </fileset>
+      <fileset dir="target/stratmlapp-1" >
+	<include name="WEB-INF/lib/*.jar"/>
+	<!--  
+	     <include name="labels/**" />
+	     <include name="data/**" />
+	     <include name="*.css" />
+	     <include name="xform/**" />
+	     <include name="css/**" />
+	     <zipfileset dir="htdocs/manual" prefix="docs/user-guide"/>
+	     <zipgroupfileset dir="." includes="examples*.zip"/>
+	-->
+      </fileset>
+    </zip>
+  </target>
 
 </project>
 
