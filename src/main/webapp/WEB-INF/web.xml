@@ -94,20 +94,27 @@
 	</servlet-mapping>
 
 	<!-- WebDAV Service (can be disabled by removing this entry) -->
-	<servlet>
+	<!--
+    <servlet>
 		<servlet-name>WebDAV</servlet-name>
 		<servlet-class>org.basex.http.webdav.WebDAVServlet</servlet-class>
-		<init-param> <param-name>org.basex.user</param-name> <param-value>admin</param-value> 
-			</init-param> <init-param> <param-name>org.basex.password</param-name> <param-value>chocolate</param-value> 
-			</init-param> <load-on-startup>1</load-on-startup>
 		
+        <init-param> 
+            <param-name>org.basex.user</param-name> 
+            <param-value>admin</param-value> 
+        </init-param> 
+        
+        <init-param> 
+            <param-name>org.basex.password</param-name>
+            <param-value>MAKE-SURE-YOU-CHANGE-IT</param-value> 
+        </init-param> <load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>WebDAV</servlet-name>
 		<url-pattern>/webdav/*</url-pattern>
 	</servlet-mapping>
-
+    -->
 	<!-- Mapping for static resources (may be restricted to a sub path) -->
 	<servlet>
 		<servlet-name>default</servlet-name>
