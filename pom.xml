@@ -2,20 +2,34 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>us.stratml</groupId>
 	<artifactId>stratmlapp</artifactId>
-	<version>1</version>
+	<version>1.0.0</version>
 	<packaging>war</packaging>
+
+    <build>
+	 <finalName>stratmlapp</finalName>
+   <plugins>
+     <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.2.1</version>
+        <configuration>
+           <outputDirectory>C:\dev\server\apache-tomcat-9.0.31\webapps</outputDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+</build>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.basex</groupId>
 			<artifactId>basex</artifactId>
-			<version>7.6</version>
+			<version>9.3</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.basex</groupId>
 			<artifactId>basex-api</artifactId>
-			<version>7.6</version>
+			<version>9.3</version>
 		</dependency>
 
 	</dependencies>
@@ -26,6 +40,11 @@
 			<name>BaseX Maven Repository</name>
 			<url>http://files.basex.org/maven</url>
 		</repository>
-	</repositories>
+				<repository>
+		  <id>xqj</id>
+		  <name>XQJ Maven Repository</name>
+		  <url>http://xqj.net/maven</url>
+		</repository>
 
+	</repositories>
 </project>
