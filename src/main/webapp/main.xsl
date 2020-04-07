@@ -42,6 +42,9 @@
 			    <meta name="DC.date" content="2018-08-19"/>
 			    <link rel="stylesheet" type="text/css"  href="css/position-style.css" />
 			    <link rel="stylesheet" type="text/css"  href="css/format-style.css" />
+			    <link rel="stylesheet" type="text/css"  href="css/position-style-webapp.css" />
+			    <link rel="stylesheet" type="text/css"  href="css/webapp.css" />
+			    
 			</head>
 			<body>
 			 <div id="marco">       
@@ -63,7 +66,7 @@
 		</div> 
 		</header>
       <main>	
-		<div class="line">
+		<div >
 				<xsl:apply-templates></xsl:apply-templates>
 				<xsl:copy-of select="//commands" />		
 				</div>
@@ -76,20 +79,31 @@
 	</xsl:template>
 
 	<xsl:template match="results">
-		<table class="results">
-			<tr>
-				<th>Name</th>
-				<th>Description</th>
-				<th>Date</th>
-				<th>Submitter</th>
-				<th>Goals</th>
-				<th>Objectives</th>
-				<th></th>
-				<th></th>
-				<th></th>
-			</tr>
-			<xsl:apply-templates selec="plan"></xsl:apply-templates>
-		</table>
+		
+		<form method="GET" class="searchform" >
+			<input type="text" name="q" value="{/result/search/query}" id="mainsearchbox" />
+			<input type="submit" value="Search"></input>
+		</form>
+		
+		<div id="searchresulstdiv" >
+			<table class="results">
+				<tr>
+					<th>Name</th>
+					<th>Description</th>
+					<th>Date</th>
+					<th>Submitter</th>
+					<th>Goals</th>
+					<th>Objectives</th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+				<xsl:apply-templates selec="plan"></xsl:apply-templates>
+			</table>
+		
+		<button onclick="document.location='Intro.xml';">Add Plan</button>
+		
+		</div>
 	</xsl:template>
 	
 	<xsl:template match="plan">

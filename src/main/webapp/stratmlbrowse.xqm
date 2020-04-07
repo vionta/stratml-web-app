@@ -22,34 +22,31 @@ declare
 		   $q as xs:string, 
 		   $start as xs:int 
 						) {
-			
-			
-			<results>{
-				for $plan in db:open("data","/")[position() = $start to  ($start + 10)] 
-					where local-name($plan/*[1]) = 'PerformancePlanOrReport'
-					   return <plan>	
-					   		  			{$plan/*:PerformancePlanOrReport/@Type}
-					   			<path>{db:path($plan)}</path>
-					   			<Name>{$plan/*:PerformancePlanOrReport/*:Name/text()}</Name>		
-					   			<Description>{$plan/*:PerformancePlanOrReport/*:Description/text()}</Description>
-					   			<date>
-					   			{$plan/*:PerformancePlanOrReport/*:PublicationDate/text()}
-					   			</date>
-					   			<submitter-name>
+	<results>{
+		let $docs := if($q="") then 
+								db:open("data","/")
+							else
+								for $initialdoc in db:open("data","/")
+									where  ft:contains($initialdoc//text(), $q)
+                                	return $initialdoc
+		
+		for $plan in $docs[position() = $start to  ($start + 10)] 
+			(:where local-name($plan/*[1]) = 'PerformancePlanOrReport'			:)
+			return <plan>	
+						{$plan/*:PerformancePlanOrReport/@Type}
+						<path>{db:path($plan)}</path>
+					   	<Name>{$plan/*:PerformancePlanOrReport/*:Name/text()}</Name>		
+					   	<Description>{$plan/*:PerformancePlanOrReport/*:Description/text()}</Description>
+					   	<date>{$plan/*:PerformancePlanOrReport/*:PublicationDate/text()}</date>
+					   	<submitter-name>
 					   			{$plan/*:PerformancePlanOrReport/*:Submitter/*:GivenName/text()}
 					   			{$plan/*:PerformancePlanOrReport/*:Submitter/*:SurName/text()}
-								</submitter-name>					   			
-    					   					
-					   			<goals>
-						   			{count($plan/*:PerformancePlanOrReport//*:Goal)}
-					   			</goals>
-					   			<objectives>
-						   			{count($plan/*:PerformancePlanOrReport//*:Objective)}			   			
-					   			</objectives>
-					   	</plan>
+						</submitter-name>					   			
+    					<goals>{count($plan/*:PerformancePlanOrReport//*:Goal)}</goals>
+					   	<objectives>{count($plan/*:PerformancePlanOrReport//*:Objective)}</objectives>
+					</plan>
 			}</results>
-					
-(:
+		(:
 		 <html>	
 			{ 
 			  let $queryresults := ft:search("data", $q) 
@@ -76,11 +73,7 @@ declare
 					  	 }
 						</results>
 			 let $searchstring := $query
-			 		
-
-				
 				}
-		      
 		  </html>
 	:)
 };
@@ -111,12 +104,12 @@ declare
 			let $commands := <div  class="pagination" >
 									{ if ($start != 1) then 
 							      <a href="browse.htm?start={$prevstart}&amp;q={$q}" >
-									<img src="../img/previous-icon.png" width="12px" alt="Previous results" />
+									<img src="img/prev-page-icon.svg" width="12px" alt="Previous results" />
 							      </a> else ""
 									}
 									{ if (count($data/*) > 9) then 
 							      <a href="browse.htm?start={$poststart}&amp;q={$q}" >
-									<img src="../img/next-icon.png" width="12px" alt="Nexts results" />
+									<img src="img/next-page-icon.svg" width="12px" alt="Nexts results" />
 							     </a> else "" 
 							     }
 								</div>
@@ -129,12 +122,14 @@ declare
 										<commands>
 											{$commands}
 										</commands>
+										<search>
+											<query>{$q}</query>
+											<start>{$start}</start>
+										</search>
 										</result>
 											, 
 										file:read-text(file:base-dir()||"main.xsl")
 										)
-				
-				
 						
 						
 						}; 
