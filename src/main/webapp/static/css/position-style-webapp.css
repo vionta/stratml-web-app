@@ -1,0 +1,19 @@
+
+
+@namespace xf url("http://www.w3.org/2002/xforms");
+@namespace html url("http://www.w3.org/1999/xhtml");
+
+:root {
+    --margenbaselateral: 50px;
+    --margenbaseelemento: 0.4em;
+}
+
+
+main  {
+	display:block;
+	/* position:absolute; */
+}
+main div {
+	display:block;
+	width:auto;
+}
