@@ -53,5 +53,9 @@ declare
   %rest:GET
   %rest:path('admin/facets.htm')
     function  stratappadmin:facets() {
-    index:facets("data")
+    <data>
+    {
+    index:texts("data")
+    
+    }</data>
 };
